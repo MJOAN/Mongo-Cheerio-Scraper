@@ -1,0 +1,57 @@
+
+<div class="jumbotron text-center">
+  <div class="overlay"></div>
+      <div class="background-image"></div>
+
+        <div class="caption">
+          <h1>Mongo Scraper</h1>
+            <p>New York Times Edition</p>
+          </div>
+      </div>
+
+
+<ul>
+  {{#each article}}
+  <li>
+    <p>
+      {{this.id}}. {{this.note}}
+      <button data-planid="{{this.id}}" class="deletenote">Delete Note</button>
+    </p>
+  </li>
+  {{/each}}
+</ul>
+
+<h2>Note</h2>
+<form id="newnote" class="button-size">
+  <textarea type="text" name="notes"></textarea>
+  <button type="submit">Save Note</button>
+</form>
+
+
+<h2>Update</h2>
+<form id="updateplan" class="button-size">
+  <select name="id">
+    {{#each plans}}
+      <option value="{{this.id}}">{{this.plan}}</option>
+    {{/each}}
+  </select>
+  <textarea type="text" name="plan" placeholder="plan"></textarea>
+  <button type="submit">Update Plan!</button>
+</form>
+
+
+<div class="container-fluid article-container">
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>New York Times Mongo Scraper</p>
+  </div>
+</footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<script src="../../assets/javascript/app.js"></script>
+
