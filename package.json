@@ -1,0 +1,35 @@
+{
+  "name": "mongo-cheerio-scraper",
+  "version": "1.0.0",
+  "description": "mongodb web scraper nytimes",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MJOAN/Mongo-Cheerio-Scraper.git"
+  },
+  "keywords": [
+    "mongodb",
+    "nytimes",
+    "webscraper",
+    "cheerio",
+    "request"
+  ],
+  "author": "MJOAN and UCLA Bootcamp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MJOAN/Mongo-Cheerio-Scraper/issues"
+  },
+  "homepage": "https://github.com/MJOAN/Mongo-Cheerio-Scraper#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.0.0-rc2",
+    "request": "^2.83.0"
+  }
+}
