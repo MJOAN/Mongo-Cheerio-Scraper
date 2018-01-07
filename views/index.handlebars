@@ -1,4 +1,7 @@
 
+
+    {{> nav }}
+
 <div class="jumbotron text-center">
   <div class="overlay"></div>
       <div class="background-image"></div>
@@ -10,37 +13,31 @@
       </div>
 
 
+<div class="container-fluid article-container">
+
 <ul>
-  {{#each article}}
+  {{#each Article}}
   <li>
     <p>
-      {{this.id}}. {{this.note}}
-      <button data-planid="{{this.id}}" class="deletenote">Delete Note</button>
+      {{this.id}}. {{this.text}}
+      <button type="submit" data-planid="{{this.id}}" class="newnote">Article Note</button>
     </p>
   </li>
   {{/each}}
 </ul>
 
-<h2>Note</h2>
-<form id="newnote" class="button-size">
-  <textarea type="text" name="notes"></textarea>
-  <button type="submit">Save Note</button>
-</form>
+<ul>
+  {{#each Article}}
+  <li>
+    <p>
+      {{this.id}}. {{this.text}}
+      <button type="submit" data-planid="{{this.id}}" class="deletenote">Delete From Saved </button>
+    </p>
+  </li>
+  {{/each}}
+</ul>
 
 
-<h2>Update</h2>
-<form id="updateplan" class="button-size">
-  <select name="id">
-    {{#each plans}}
-      <option value="{{this.id}}">{{this.plan}}</option>
-    {{/each}}
-  </select>
-  <textarea type="text" name="plan" placeholder="plan"></textarea>
-  <button type="submit">Update Plan!</button>
-</form>
-
-
-<div class="container-fluid article-container">
 </div>
 
 <footer class="footer">
