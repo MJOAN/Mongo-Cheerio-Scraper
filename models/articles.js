@@ -1,24 +1,29 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Note = require("./notes");
 
 console.log('Running mongoose version: ', mongoose.version);
  
 const ArticleSchema = new Schema({
-    id: {
+    headline: {
         type: String,
     },
-    headline: {
-        type: String
+    link: {
+        type: String,
     },
-    byline: {
-        type: String
+    saved: {
+        type: Boolean,
+        default: false
     },
+    notes: [{ type: Schema.Types.ObjectId, ref: 'Notes' }],
     date:   {  
-        type: Date   
+        type: Date, 
+        default: Date.now  
     }
 });
 
-console.log('text: ', this.text);
 
+console.log('ArticleSchema created!');
 
-module.exports = mongoose.model('Articles', ArticleSchema);
+var Article = mongoose.model('Article', ArticleSchema);
+module.exports = Article;

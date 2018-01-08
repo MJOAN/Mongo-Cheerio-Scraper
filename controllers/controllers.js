@@ -1,13 +1,19 @@
 const express = require("express");
 const router = express.Router();
 
-// Import the model (cat.js) to use its database functions.
-const models = require("../models/articles.js");
+const cheerio = require('cheerio');
+const request = require('request');
 
+// setup mongoose connection
+const databaseUrl = "mongoscraper";
+const collections = ["scrapedarticles"];
+const mongoose = require("mongoose");
 
+mongoose.connect('mongodb://localhost/databaseUrl');
+var db = mongoose.connection;
 
-
-
+const Note = require("../models/notes.js");
+const Article = require("../models/articles.js");
 
 // Simple index route
 router.get("/", function(req, res) {
@@ -15,69 +21,60 @@ router.get("/", function(req, res) {
 });
 
 
-/* 
-router.get("/", function(req, res) {
-  cat.all(function(data) {
-    var hbsObject = {
-      cats: data
-    };
-    console.log(hbsObject);
-    res.render("index", hbsObject);
-  });
-});
-*/
-
-
-
 // Scrape data from one site and place it into the mongodb db
-app.get("/scrape", function(req, res) {
-  // Make a request for the news section of ycombinator
+router.get("/articles", function(req, res) {
+
   request("https://www.nytimes.com/", function(error, response, html) {
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
+
     // For each element with a "title" class
-    $(".title").each(function(i, element) {
+    $("article h2").each(function(i, element) {
+
+      var result = {};
+
       // Save the text and href of each link enclosed in the current element
-      var title = $(element).children("a").text();
-      var link = $(element).children("a").attr("href");
+      result.headline = $(element).children("a").text();      
+      result.link = $(element).children("a").attr("href");
+
+      console.log("headline: ", result.headline);
+      console.log("link: ", result.link);
 
       // If this found element had both a title and a link
-      if (title && link) {
-        // Insert the data in the scrapedData db
-        db.scrapedData.insert({
-          title: title,
-          link: link
-        },
-        function(err, inserted) {
-          if (err) {
-            // Log the error if one is encountered during the query
-            console.log(err);
-          }
-          else {
-            // Otherwise, log the inserted data
-            console.log(inserted);
-          }
-        });
-      }
-    });
-  });
+      if (result.headline && result.link) {
 
+        var newEntry = new Article (result);
+        // save the user
+        newEntry.save()
+          .then(function() {
+          res.send({redirect: '/'});
+        }).catch(function(err) {
+          res.json(err);
+        });
+          //byline: byline, link: link, date: date
+        res.render("index", {headline: result.headline, link: result.link })
+        };
+      });
+    });
   // Send a "Scrape Complete" message to the browser
-  res.send("Scrape Complete");
-});
+  console.log("Scrape Complete");
+  });
 
 
 // Retrieve    SAVED  data from the db
-app.get("/saved", function(req, res) {
-  // Find all results from the scrapedData collection in the db
-  db.scrapedData.find({}, function(error, found) {
+router.get("/saved", function(req, res) {
+  // Find all results from the articles collection in the db
+  db.article.find({}, function(error, result) {
     // Throw any errors to the console
     if (error) {
       console.log(error);
-    }
-    // If there are no errors, send the data to the browser as json
-    else {
-      res.json(found);
+    } else {
+      //res.json(articles);
+        // Send a "Scrape Complete" message to the browser
+      console.log("Saved Articles Now Complete");
+      //byline: byline, link: link, date: date
+      res.render("index", {headline: result.headline, link: result.link })
+
     }
   });
 });

@@ -1,20 +1,26 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Article = require("./articles");
 
-console.log('Running mongoose version: ', mongoose.version);
+
+console.log('Running Mongoose Version: ', mongoose.version);
  
 const NoteSchema = new Schema({
-    id: {
+    title: {
         type: String,
     },
     text: {
-        type: String
+        type: String,
     },
+    article: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
     date: {
         type: Date
     }
 });
 
-console.log('text: ', this.text);
 
-module.exports = mongoose.model('Notes', NoteSchema);
+console.log('NoteSchema created!');
+
+var Note = mongoose.model('Note', NoteSchema);
+
+module.exports = Note;

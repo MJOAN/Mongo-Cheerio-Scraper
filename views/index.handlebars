@@ -15,8 +15,17 @@
 
 <div class="container-fluid article-container">
 
-<ul>
-  {{#each Article}}
+        {{#each article}}
+          <tr>
+            <td>{{this.headline}}</td> 
+            <td>{{this.link}}</td>
+            <td><a href="/addNotes/{{this._id}}"><button type="submit" class="btn btn-primary" data-text="{{this.note}}">Article Note</a></td> 
+            <td><a href="/deleteNotes/{{this._id}}"><button type="submit" class="btn btn-danger" data-text="{{this.note}}">Delete From Saved </a></button></td> 
+          </tr>          
+       {{/each}}   
+
+{{!-- <ul>
+  {{#each Note}}
   <li>
     <p>
       {{this.id}}. {{this.text}}
@@ -27,7 +36,7 @@
 </ul>
 
 <ul>
-  {{#each Article}}
+  {{#each Note}}
   <li>
     <p>
       {{this.id}}. {{this.text}}
@@ -36,7 +45,7 @@
   </li>
   {{/each}}
 </ul>
-
+ --}}
 
 </div>
 
@@ -45,10 +54,3 @@
     <p>New York Times Mongo Scraper</p>
   </div>
 </footer>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-<script src="../../assets/javascript/app.js"></script>
-
