@@ -2,11 +2,11 @@
 
 //  scrape route
 $(document).on("click", "#button", function () {
-      $.get("/articles", function (NYTimes) {
-          scrapeArticles(data);
-          console.log("scraping articles! ", data)
+      $.get("/articles", function (NYTData) {
+          scrapeArticles(NYTData);
+          console.log("I am scraping articles! ", NYTData)
       }).done(function () {
-
+        console.log("Done with AJAX call!")
       })
   });
 
@@ -16,10 +16,13 @@ function scrapeArticles() {
     // Log the NYTData to console, where it will show up as an object
     console.log(NYTData);
 
+    // Loop through and provide the articles
+    for (var i = 0; i < NYTData.length; i++) {
+
       // Create the HTML well (section) and add the article content for each
       var articleContainer = $("<div>");
       articleContainer.addClass(".article-container");
-      articleContainer.attr("id", "article-well-" + NYTData.id);
+      //articleContainer.attr("id", "article-well-" + NYTData.id);
       $(".article-container").append(articleContainer);
 
       var saveArticle = $("<button>");
@@ -42,10 +45,7 @@ function scrapeArticles() {
       deleteFromSaved.text(ds);
       deleteFromSaved.attr("data-name", ds );
       $(".article-container").append(deleteFromSaved);
-
-    // Loop through and provide the correct number of articles
-    for (var i = 0; i < NYTData.length; i++) {
-
+      
       // $(".article-container").append("<p data-id='" + NYTData[i]._id + "'>" + NYTData[i].title + "<br />" + NYTData[i].link + "</p>");
       // Then display the remaining fields in the HTML (Section Name, Date, URL)
       $(".article-container").append("<h5>Section: " + NYTData[i].title + "</h5>");

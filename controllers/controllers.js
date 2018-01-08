@@ -27,8 +27,7 @@ router.get("/articles", function(req, res) {
   request("https://www.nytimes.com/", function(error, response, html) {
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
-
-    // For each element with a "title" class
+  
     $("article h2").each(function(i, element) {
 
       var result = {};
@@ -47,12 +46,11 @@ router.get("/articles", function(req, res) {
         // save the user
         newEntry.save()
           .then(function() {
-          res.send({redirect: '/'});
+          //res.send({redirect: '/'});
         }).catch(function(err) {
           res.json(err);
         });
-          //byline: byline, link: link, date: date
-        res.render("index", {headline: result.headline, link: result.link })
+        res.render("index", { headline: result.headline, link: result.link })
         };
       });
     });
@@ -64,17 +62,13 @@ router.get("/articles", function(req, res) {
 // Retrieve    SAVED  data from the db
 router.get("/saved", function(req, res) {
   // Find all results from the articles collection in the db
-  db.article.find({}, function(error, result) {
+  db.Article.find({}, function(error, result) {
     // Throw any errors to the console
-    if (error) {
-      console.log(error);
-    } else {
-      //res.json(articles);
-        // Send a "Scrape Complete" message to the browser
-      console.log("Saved Articles Now Complete");
-      //byline: byline, link: link, date: date
-      res.render("index", {headline: result.headline, link: result.link })
-
+    if (error) {console.log(error);} 
+    else {
+    res.json(result);
+    console.log("Saved Articles Now Complete");
+    //res.render("index", {headline: result.headline, link: result.link })
     }
   });
 });

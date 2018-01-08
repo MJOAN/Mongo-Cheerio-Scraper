@@ -1,6 +1,6 @@
 {
   "name": "mongo-cheerio-scraper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "mongodb web scraper nytimes",
   "main": "server.js",
   "scripts": {
@@ -31,5 +31,6 @@
     "express-handlebars": "^3.0.0",
     "mongoose": "^5.0.0-rc2",
     "request": "^2.83.0"
-  }
+  },
+  "devDependencies": {}
 }
