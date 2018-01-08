@@ -46,25 +46,6 @@ db.once("open", function() {
 const routes = require("./controllers/controllers.js");
 app.use("/", routes);
  
-// Routes
-/*app.get(  '/',            routes.index );
-app.post( '/articles',    routes.articles);
-app.get( '/saved',    routes.articles);
-app.post(  '/note',    routes.note );
-app.get( '/delete',  routes.delete );*/
-
-
-
-// mongoose.connect(config.url);
-// mongoose.Promise = global.Promise;
-
-/*// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-*/
 
 console.log("created new database: ", databaseUrl)
 
