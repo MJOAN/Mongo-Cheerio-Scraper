@@ -15,30 +15,21 @@ var db = mongoose.connection;
 const Note = require("../models/notes.js");
 const Article = require("../models/articles.js");
 
-var result = [];
+var result = {};
 
 // Simple index route
 router.get("/", function(req, res) {
   res.render("index");
 });
 
-
-
 // Scrape data from one site and place it into the mongodb db
 router.get("/scrape", function(req, res) {
-  console.log("scrape route")
+  console.log("scrape route working")
+  
   request("https://www.nytimes.com/", function(error, response, html) {
-  // console.log("response", response)
-  // Load the html body from request into cheerio
     var $ = cheerio.load(html);
 
-/*    var articles = {
-        headline: "Our first headline",
-        summary: "Our first summary",
-        link: "www.link.com"
-    }
-*/
-    $("article h2").each(function(i, element) {
+    $(".article").each(function(i, element) {
 
       // Save the text and href of each link enclosed in the current element
       var headline = $(element).text();   
@@ -56,32 +47,54 @@ router.get("/scrape", function(req, res) {
 
        console.log("result: ", result)
       // If this found element had both a title and a link
-      if (result.headline && result.link) {
+      if (result.headline && result.summary && result.link) {
 
         var newEntry = new Article (result);
         // save the user
         newEntry.save()
       }
-
         console.log("after new-entry to db")
+
       });
         var hbsObject = { 
           headline: result.headline, 
           summary: result.summary, 
           link: result.link 
-        };
-      
-      return res.render("index", hbsObject)  //res ends backend
+      };
+      // console.log("hbsObject", hbsObject)
+      res.render("index", hbsObject)  //res ends backend
     });
+
   });
 
 
+router.get("/articles", function(req, res) {
+  // Grab every doc in the Articles array
+  db.Article.find({}, function(error, articles) {
+
+    var hbsObject = { 
+      headline: result.headline, 
+      summary: result.summary, 
+      link: result.link 
+    };
+    // Log any errors
+    if (error) {
+      console.log(error);
+    }
+    // Or send the doc to the browser as a json object
+    else {
+      res.json(articles);
+    }
+
+     res.render("index", hbsObject)  //res ends backend
+  });
+});
 
 
 // Retrieve results from mongo
 router.get("/saved", function(req, res) {
   // Find all notes in the notes collection
-  db.Article.find({}, function(error, saved) {
+  db.Article.find({}, 'saved', function(error, saved) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -90,7 +103,7 @@ router.get("/saved", function(req, res) {
     // This will fire off the success function of the ajax request
     else {
       //res.json(saved);
-      console.log("Saved Articles Now Complete");
+      console.log("saving articles rendering now");
       res.render("index", {headline: result.headline, link: result.link })
     }
   });

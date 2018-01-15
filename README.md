@@ -13,6 +13,12 @@ In this assignment, you'll create a web app that lets users view and leave comme
 7. cheerio
 8. request
 
+
+![Node Screenshot 8](ss1.png)
+![Node Screenshot 7](ss2.png)
+![Node Screenshot 7](ss3.png)
+![Node Screenshot 7](ss4.png)
+
 9. In order to deploy your project to Heroku, you must set up an mLab provision. mLab is remote MongoDB database that Heroku supports natively. Follow these steps to get it running:
 
 1. Create a Heroku app in your project directory.

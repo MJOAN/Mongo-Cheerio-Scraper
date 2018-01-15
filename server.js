@@ -29,7 +29,7 @@ const databaseUrl = "mongoscraper";
 const collections = ["scrapedarticles"];
 
 const config = require("./config/database.js")
-mongoose.connect('mongodb://localhost/databaseUrl');
+mongoose.connect('mongodb://localhost/databaseUrl' || MONGODB_URI);
 console.log("created new database: ", databaseUrl)
 
 //Get the default connection
@@ -53,4 +53,4 @@ app.listen(3000, function() {
   console.log("App running on port 3000!");
 });
 
-
+// MONGOURI: mongodb://heroku_1qqf4x9g:pcs8m689ekgi02qrtlcr1toe71@ds155577.mlab.com:55577/heroku_1qqf4x9g

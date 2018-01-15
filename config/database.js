@@ -1,7 +1,8 @@
-module.exports = {
 
-    'url' : process.env.MONGODB_URI 
 
-};
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";`
 
-// || 'mongodb://127.0.0.1/travelSecure_development'
+
+
+
+
