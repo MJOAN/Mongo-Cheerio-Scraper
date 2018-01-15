@@ -1,6 +1,17 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Mongo Scraper</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active home"><a href="/">Home</a></li>
+      <li class="active saved"><a href="/saved">Saved Articles</a></li>
+      <li class="active scrape"><a href="/scrape" class="btn btn-danger scrape-new">Scrape New Articles!</a></li>
+    </ul>
+  </div>
+</nav>
 
-
-    {{> nav }}
+ {{!-- {{> nav }} --}}
 
 <div class="jumbotron text-center">
   <div class="overlay"></div>
@@ -15,37 +26,47 @@
 
 <div class="container-fluid article-container">
 
-        {{#each Article}}
-          <tr>
-            <td>{{this.headline}}</td> 
-            <td>{{this.link}}</td>
-            <td><a href="/addNotes/{{this._id}}"><button type="submit" class="btn btn-primary" data-text="{{this.note}}">Article Note</a></td> 
-            <td><a href="/deleteNotes/{{this._id}}"><button type="submit" class="btn btn-danger" data-text="{{this.note}}">Delete From Saved </a></button></td> 
-          </tr>          
-       {{/each}}   
+  {{#each result}}
+    <tr>
+      <td>{{this.headline}}</td> 
+      <td>{{this.summary}}</td> 
+      <td>{{this.link}}</td>
+      <td><button id="note"><a href="/note/{{this._id}}" data-behaviour="notesModal" data-title="Article Note" data-content=""><button type="submit" class="btn btn-primary" data-text="{{this.note}}">Article Note</a></button></td> 
+      <td><button id="delete"><a href="/delete/{{this._id}}" data-behaviour="deleteModal" data-title="Delete Note" data-content=""><button type="submit" class="btn btn-danger" data-text="{{this.note}}">Delete From Saved </a></button></td> 
+    </tr>          
+ {{/each}}   
 
-{{!-- <ul>
-  {{#each Note}}
-  <li>
-    <p>
-      {{this.id}}. {{this.text}}
-      <button type="submit" data-planid="{{this.id}}" class="newnote">Article Note</button>
-    </p>
-  </li>
-  {{/each}}
-</ul>
 
-<ul>
-  {{#each Note}}
-  <li>
-    <p>
-      {{this.id}}. {{this.text}}
-      <button type="submit" data-planid="{{this.id}}" class="deletenote">Delete From Saved </button>
-    </p>
-  </li>
-  {{/each}}
-</ul>
- --}}
+
+<div id="modal" class="notesModal">
+  <div class="modal-body">
+    <ul>
+      {{#each note}}
+      <li>
+        <p>
+          {{this.id}}. {{this.text}}
+          <button type="submit" data-planid="{{this.id}}" class="new">Article Note</button>
+        </p>
+      </li>
+      {{/each}}
+    </ul>
+</div>
+
+<div id="modal" class="deleteModal">
+  <div class="modal-body">
+      <ul>
+        {{#each note}}
+          <li>
+            <p>
+            {{this.id}}. {{this.text}}
+            <button type="submit" data-planid="{{this.id}}" class="delete">Delete From Saved </button>
+          </p>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
 
 </div>
 
@@ -54,3 +75,14 @@
     <p>New York Times Mongo Scraper</p>
   </div>
 </footer>
+
+
+
+
+
+  {{!--{{#each note}}
+          {{#if note}}
+            {{> note/saved=false}}
+          {{/if}}
+        {{/each}} 
+    --}}

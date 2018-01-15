@@ -12,7 +12,9 @@ In this assignment, you'll create a web app that lets users view and leave comme
 6. body-parser
 7. cheerio
 8. request
+
 9. In order to deploy your project to Heroku, you must set up an mLab provision. mLab is remote MongoDB database that Heroku supports natively. Follow these steps to get it running:
+
 1. Create a Heroku app in your project directory.
 2. Run this command in your Terminal/Bash window:
     * `heroku addons:create mongolab`
@@ -45,7 +47,7 @@ not function if you do (but it's also best practice to use a local databse for d
 * Go back to Saturday's activities if you need a refresher on how to partner one model with another.
 * Whenever you scrape a site for stories, make sure an article isn't already represented in your database before saving it; we don't want duplicates.
 * Don't just clear out your database and populate it with scraped articles whenever a user accesses your site.
-  * If your app deletes stories every time someone visits, your users won't be able to see any comments except the ones that they post.
+* If your app deletes stories every time someone visits, your users won't be able to see any comments except the ones that they post.
 
 ### Helpful Links
 * [MongoDB Documentation](https://docs.mongodb.com/manual/)

@@ -10,18 +10,19 @@ const app = express();
 // public dir static
 app.use(express.static("public"));
 
-// set handlebars views
-app.engine("handlebars", exphbs({extname: "handlebars", defaultLayout: "main", layoutsDir: __dirname + "/views/layouts" }));
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
 // set express data parsing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// set handlebars views
+//app.engine("handlebars", exphbs({extname: "handlebars", defaultLayout: "main", layoutsDir: __dirname + "/views/layouts" }));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
 // models required
-const note = require("./models/notes.js");
-const article = require("./models/articles.js");
+require("./models/notes.js");
+require("./models/articles.js");
 
 // setup mongoose connection
 const databaseUrl = "mongoscraper";
@@ -45,7 +46,6 @@ db.once("open", function() {
 // routes
 const routes = require("./controllers/controllers.js");
 app.use("/", routes);
- 
 
 console.log("created new database: ", databaseUrl)
 
@@ -53,4 +53,4 @@ app.listen(3000, function() {
   console.log("App running on port 3000!");
 });
 
-module.exports = app;
+

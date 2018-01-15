@@ -15,88 +15,73 @@ var db = mongoose.connection;
 const Note = require("../models/notes.js");
 const Article = require("../models/articles.js");
 
+var result = [];
+
 // Simple index route
 router.get("/", function(req, res) {
   res.render("index");
 });
 
 
-// Scrape data from one site and place it into the mongodb db
-router.get("/articles", function(req, res) {
 
+// Scrape data from one site and place it into the mongodb db
+router.get("/scrape", function(req, res) {
+  console.log("scrape route")
   request("https://www.nytimes.com/", function(error, response, html) {
-    // Load the html body from request into cheerio
+  // console.log("response", response)
+  // Load the html body from request into cheerio
     var $ = cheerio.load(html);
-  
+
+/*    var articles = {
+        headline: "Our first headline",
+        summary: "Our first summary",
+        link: "www.link.com"
+    }
+*/
     $("article h2").each(function(i, element) {
 
-      var result = {};
-
       // Save the text and href of each link enclosed in the current element
-      result.headline = $(element).children("a").text();      
-      result.link = $(element).children("a").attr("href");
+      var headline = $(element).text();   
+      var summary = $(element).children("a").text();   
+      var link = $(element).children("a").attr("href");
 
-      console.log("headline: ", result.headline);
-      console.log("link: ", result.link);
+      console.log("headline: ", headline);
+      console.log("link: ", link);
 
+      var result = {
+        headline: headline,
+        summary: summary,
+        link: link
+      };
+
+       console.log("result: ", result)
       // If this found element had both a title and a link
       if (result.headline && result.link) {
 
         var newEntry = new Article (result);
         // save the user
         newEntry.save()
-          .then(function() {
-          //res.send({redirect: '/'});
-        }).catch(function(err) {
-          res.json(err);
-        });
-        res.render("index", { headline: result.headline, link: result.link })
-        };
+      }
+
+        console.log("after new-entry to db")
       });
+        var hbsObject = { 
+          headline: result.headline, 
+          summary: result.summary, 
+          link: result.link 
+        };
+      
+      return res.render("index", hbsObject)  //res ends backend
     });
-  // Send a "Scrape Complete" message to the browser
-  console.log("Scrape Complete");
   });
 
 
-// Retrieve    SAVED  data from the db
-router.get("/saved", function(req, res) {
-  // Find all results from the articles collection in the db
-  db.Article.find({}, function(error, result) {
-    // Throw any errors to the console
-    if (error) {console.log(error);} 
-    else {
-    res.json(result);
-    console.log("Saved Articles Now Complete");
-    //res.render("index", {headline: result.headline, link: result.link })
-    }
-  });
-});
 
-
-
-/*
-// Handle form submission, save submission to mongo
-app.post("/submit", function(req, res) {
-  console.log(req.body);
-  // Insert the note into the notes collection
-  db.notes.insert(req.body, function(error, saved) {
-    // Log any errors
-    if (error) {
-      console.log(error);
-    }
-    // Otherwise, send the note back to the browser
-    // This will fire off the success function of the ajax request
-    else {
-      res.send(saved);
-    }
-  });
-});
 
 // Retrieve results from mongo
-app.get("/all", function(req, res) {
+router.get("/saved", function(req, res) {
   // Find all notes in the notes collection
-  db.notes.find({}, function(error, found) {
+  db.Article.find({}, function(error, saved) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -104,14 +89,29 @@ app.get("/all", function(req, res) {
     // Otherwise, send json of the notes back to user
     // This will fire off the success function of the ajax request
     else {
-      res.json(found);
+      //res.json(saved);
+      console.log("Saved Articles Now Complete");
+      res.render("index", {headline: result.headline, link: result.link })
     }
   });
 });
 
 
+// router.post("/notes/:id", function(req, res) {
+//   db.Note.create([  // check mongoose create
+//     "title", "text"
+//   ], [
+//     req.body.title, req.body.text
+//   ], function(result) {
+//     // Send back the ID of the new quote
+//     res.json({ id: result.insertId });
+//   });
+// })
+
+
+
 // Update just one note by an id
-app.post("/update/:id", function(req, res) {
+router.post("/notes/:id", function(req, res) {
   
   // When searching by an id, the id needs to be passed in
   // as (mongojs.ObjectId(IDYOUWANTTOFIND))
@@ -124,10 +124,10 @@ app.post("/update/:id", function(req, res) {
     // sent in the req's body.
     $set: {
       "title": req.body.title,
-      "note": req.body.note,
-      "modified": Date.now()
+      "text": req.body.text,
+      "date": Date.now()
     }
-  }, function(error, edited) {
+  }, function(error, note) {
     // Log any errors from mongojs
     if (error) {
       console.log(error);
@@ -136,17 +136,21 @@ app.post("/update/:id", function(req, res) {
     // Otherwise, send the mongojs response to the browser
     // This will fire off the success function of the ajax request
     else {
-      console.log(edited);
-      res.send(edited);
+      console.log(note);
+      res.send(note);
     }
   });
 });
 
 
+
 // Delete One from the DB
-app.get("/delete/:id", function(req, res) {
+router.get("/delete/:id", function(req, res) {
+
+  var condition = "id = " + req.params.id;
+  console.log("condition", condition);
   // Remove a note using the objectID
-  db.notes.remove({
+  db.Note.remove({
     "_id": mongojs.ObjectID(req.params.id)
   }, function(error, removed) {
     // Log any errors from mongojs
@@ -164,23 +168,6 @@ app.get("/delete/:id", function(req, res) {
 });
 
 
-// Clear the DB
-app.get("/clearall", function(req, res) {
-  // Remove every note from the notes collection
-  db.notes.remove({}, function(error, response) {
-    // Log any errors to the console
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    // Otherwise, send the mongojs response to the browser
-    // This will fire off the success function of the ajax request
-    else {
-      console.log(response);
-      res.send(response);
-    }
-  });
-}); */
 
-
+// Export routes for server.js to use.
 module.exports = router;

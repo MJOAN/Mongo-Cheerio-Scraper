@@ -1,38 +1,101 @@
 
+// Make sure we wait to attach our handlers until the DOM is fully loaded.
 
-//  scrape route
-$(document).on("click", "#button", function () {
-      $.get("/articles", function (NYTData) {
-          scrapeArticles(NYTData);
-          console.log("I am scraping articles! ", NYTData)
-      }).done(function () {
-        console.log("Done with AJAX call!")
-      })
+$(document).ready(function() {
+
+  $(".scrape").on("click", function(event) {
+
+    // Send the PUT request.
+    $.ajax({
+      url: "/scrape",
+      method: "GET"
+    }).then(
+      function() {
+        console.log("scraped new data!");
+        // Reload the page to get the updated list
+        location.reload();
+      });
+    });
+
+
+  $(".saved").on("submit", function(event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+/*    var newCat = {
+      name: $("#ca").val().trim(),
+      sleepy: $("[name=sleepy]:checked").val().trim()
+    };*/
+
+    // Send the POST request.
+    $.ajax({
+      url: "/saved", 
+      method: "POST"
+    }).then(
+      function() {
+        console.log("saved articles!");
+        // Reload the page to get the updated list
+        location.reload();
+      });
   });
 
-function scrapeArticles() {
-  $.getJSON("/articles", function (NYTData) {
-    // }).done(function() {
-    // Log the NYTData to console, where it will show up as an object
-    console.log(NYTData);
+})
+
+
+/*
+  $(".note").on("click", function(event) {
+    var id = $(this).data("id");
+    
+    console.log("I am getting notes from articles! ", notes)
+
+    // Send the DELETE request.
+    $.ajax("/note/" + id, {
+      type: "DELETE",
+    }).then(
+      function() {
+        console.log("deleted cat", id);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+
+
+  $(".delete").on("click", function(event) {
+    var id = $(this).data("id");
+
+    // Send the DELETE request.
+    $.ajax("/delete/" + id, {
+      type: "DELETE",
+    }).then(
+      function() {
+        console.log("deleted cat", id);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+*/
+
+
+
+/*function deleteNotes() {
+  $.getJSON("/delete", function (notes) {
+
+    console.log(notes);
 
     // Loop through and provide the articles
-    for (var i = 0; i < NYTData.length; i++) {
+    for (var i = 0; i < notes.length; i++) {
 
       // Create the HTML well (section) and add the article content for each
-      var articleContainer = $("<div>");
-      articleContainer.addClass(".article-container");
-      //articleContainer.attr("id", "article-well-" + NYTData.id);
-      $(".article-container").append(articleContainer);
+      var noteContainer = $("<div>");
+      noteContainer.addClass(".notes");
+      noteContainer.attr("id", "article-well-" + note.id);
+      $(".notes").append(noteContainer);
 
-      var saveArticle = $("<button>");
-      var sa = "Save Article";
-      saveArticle.addClass("btn-success");
-      saveArticle.text(sa);
-      saveArticle.attr("data-name", sa);
-      $(".article-container").append(saveArticle);
-
-      var articleNotes= $("<button>");
+      var articleNotes = $("<button>");
       var an = "Article Notes";
       articleNotes.addClass("btn btn-info");
       articleNotes.text(an);
@@ -46,22 +109,12 @@ function scrapeArticles() {
       deleteFromSaved.attr("data-name", ds );
       $(".article-container").append(deleteFromSaved);
       
-      // $(".article-container").append("<p data-id='" + NYTData[i]._id + "'>" + NYTData[i].title + "<br />" + NYTData[i].link + "</p>");
-      // Then display the remaining fields in the HTML (Section Name, Date, URL)
-      $(".article-container").append("<h5>Section: " + NYTData[i].title + "</h5>");
-      $(".article-container").append("<h5>" + NYTData[i].link + "</h5>");
-      //$(".article-container").append("<a href='" + NYTData.response.docs[i].web_url + "'>" + NYTData.response.docs[i].web_url + "</a>");
+      $(".notes").append("<p data-id='" + notes[i]._id + ">" + "<h5>Section: " + notes[i].title +  + "</h5>" + "<br />" + notes[i].link + "</p>");
 
-      // Log the remaining fields to console as well
-      console.log(NYTData._id);
-      console.log(NYTData.title);
-      console.log(NYTData.link);
+      console.log("notes id: ", notes._id);
+      console.log("notes title: ", notes.title);
+      console.log("notes link: ", notes.link);
     }
   });
 }
-
-
-// This button clears the top articles section
-$("#clear-all").on("click", function() {
-  $(".article-container").empty();
-});
+*/
