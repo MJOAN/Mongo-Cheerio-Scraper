@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app.engine("handlebars", exphbs({extname: "handlebars", defaultLayout: "main", layoutsDir: __dirname + "/views/layouts" }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+app.set('views', __dirname + '/views')
 
 
 // models required

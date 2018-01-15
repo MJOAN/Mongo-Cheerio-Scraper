@@ -19,52 +19,50 @@ var result = {};
 
 // Simple index route
 router.get("/", function(req, res) {
-  res.render("index");
+  res.render("index",  {
+       title: 'Mongo Scraper'
+  });
 });
 
 // Scrape data from one site and place it into the mongodb db
 router.get("/scrape", function(req, res) {
-  console.log("scrape route working")
+  console.log("called this route");
+  var result = [];
   
   request("https://www.nytimes.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 
-    $(".article").each(function(i, element) {
 
-      // Save the text and href of each link enclosed in the current element
-      var headline = $(element).text();   
-      var summary = $(element).children("a").text();   
-      var link = $(element).children("a").attr("href");
+    $("article h2").each(function(i, element) {
 
-      console.log("headline: ", headline);
-      console.log("link: ", link);
+        // Save the text and href of each link enclosed in the current element
+        var headline = $(element).text();   
+        var summary = $(element).children("a").text();   
+        var link = $(element).children("a").attr("href");
 
-      var result = {
-        headline: headline,
-        summary: summary,
-        link: link
-      };
+        result.push({
+          headline: headline,
+          summary: summary,
+          link: link
+        });
 
-       console.log("result: ", result)
-      // If this found element had both a title and a link
-      if (result.headline && result.summary && result.link) {
+        console.log(headline);
 
-        var newEntry = new Article (result);
-        // save the user
-        newEntry.save()
-      }
+        // If this found element had both a title and a link
+        if (result.headline && result.summary && result.link) {
+
+          var newEntry = new Article (result);
+          // save the user
+          newEntry.save()
+        }
         console.log("after new-entry to db")
-
       });
-        var hbsObject = { 
-          headline: result.headline, 
-          summary: result.summary, 
-          link: result.link 
-      };
-      // console.log("hbsObject", hbsObject)
-      res.render("index", hbsObject)  //res ends backend
-    });
 
+      res.render('index', {
+          title: 'Scaped Articles',
+          result
+      })
+    });
   });
 
 
