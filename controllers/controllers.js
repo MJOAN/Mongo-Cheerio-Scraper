@@ -69,22 +69,20 @@ router.get("/scrape", function(req, res) {
 
 
 router.get("/saved", function(req, res) {
-  Article.find() {
-    .then(function(saved) {
-     res.render("index", {
+  db.Article.find({}, function(err, saved) {
+      res.render('index', {
           title: 'Saved Articles',
           saved
-        });
       });
-    };
+    });
 });
 
 
 router.post("/save", function(req, res) {
-  console.log("res", res)
+  console.log("req", req.body)
 
-  var article = new Article({ headline: res.headline, summary: res.summary, link: res.link });  
-  Article.save((err, savedArticles) => {  
+  var Articles = new Article(req.body);  
+  db.Articles.save((err, savedArticles) => {  
     if (err) {
         res.status(500).send(err);
     }
