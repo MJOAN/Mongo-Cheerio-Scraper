@@ -81,7 +81,9 @@ router.get("/saved", function(req, res) {
 
 
 router.post("/save", function(req, res) {
-  let article = new Article(savedArticles);  
+  console.log("res", res)
+
+  var article = new Article({ headline: res.headline, summary: res.summary, link: res.link });  
   Article.save((err, savedArticles) => {  
     if (err) {
         res.status(500).send(err);
