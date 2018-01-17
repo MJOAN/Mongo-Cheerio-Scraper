@@ -5,7 +5,7 @@ var Article = require("./articles");
 
 console.log('Running Mongoose Version: ', mongoose.version);
  
-const NoteSchema = new Schema({
+const NoteSchema = mongoose.Schema({
     title: {
         type: String,
     },

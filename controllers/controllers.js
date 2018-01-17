@@ -10,12 +10,13 @@ const collections = ["scrapedarticles"];
 const mongoose = require("mongoose");
 
 mongoose.connect('mongodb://localhost/databaseUrl');
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 const Note = require("../models/notes.js");
 const Article = require("../models/articles.js");
 
 var result = {};
+var saved = {};
 
 // Simple index route
 router.get("/", function(req, res) {
@@ -27,8 +28,9 @@ router.get("/", function(req, res) {
 // Scrape data from one site and place it into the mongodb db
 router.get("/scrape", function(req, res) {
   console.log("called this route");
-  var result = [];
   
+  var result = [];
+
   request("https://www.nytimes.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 
@@ -66,69 +68,32 @@ router.get("/scrape", function(req, res) {
   });
 
 
-router.get("/articles", function(req, res) {
-  // Grab every doc in the Articles array
-  db.Article.find({}, function(error, articles) {
-
-    var hbsObject = { 
-      headline: result.headline, 
-      summary: result.summary, 
-      link: result.link 
-    };
-    // Log any errors
-    if (error) {
-      console.log(error);
-    }
-    // Or send the doc to the browser as a json object
-    else {
-      res.json(articles);
-    }
-
-     res.render("index", hbsObject)  //res ends backend
-  });
-});
-
-
-// Retrieve results from mongo
 router.get("/saved", function(req, res) {
-  // Find all notes in the notes collection
-  db.Article.find({}, 'saved', function(error, saved) {
-    // Log any errors
-    if (error) {
-      console.log(error);
+  Article.find() {
+    .then(function(saved) {
+     res.render("index", {
+          title: 'Saved Articles',
+          saved
+        });
+      });
+    };
+});
+
+
+router.post("/save", function(req, res) {
+  let article = new Article(savedArticles);  
+  Article.save((err, savedArticles) => {  
+    if (err) {
+        res.status(500).send(err);
     }
-    // Otherwise, send json of the notes back to user
-    // This will fire off the success function of the ajax request
-    else {
-      //res.json(saved);
-      console.log("saving articles rendering now");
-      res.render("index", {headline: result.headline, link: result.link })
-    }
+    res.status(200).send(savedArticles);
   });
 });
 
 
-// router.post("/notes/:id", function(req, res) {
-//   db.Note.create([  // check mongoose create
-//     "title", "text"
-//   ], [
-//     req.body.title, req.body.text
-//   ], function(result) {
-//     // Send back the ID of the new quote
-//     res.json({ id: result.insertId });
-//   });
-// })
-
-
-
-// Update just one note by an id
 router.post("/notes/:id", function(req, res) {
-  
-  // When searching by an id, the id needs to be passed in
-  // as (mongojs.ObjectId(IDYOUWANTTOFIND))
-
   // Update the note that matches the object id
-  db.notes.update({
+  Note.update({
     "_id": mongojs.ObjectId(req.params.id)
   }, {
     // Set the title, note and modified parameters
@@ -155,7 +120,6 @@ router.post("/notes/:id", function(req, res) {
 
 
 
-// Delete One from the DB
 router.get("/delete/:id", function(req, res) {
 
   var condition = "id = " + req.params.id;
@@ -179,6 +143,4 @@ router.get("/delete/:id", function(req, res) {
 });
 
 
-
-// Export routes for server.js to use.
 module.exports = router;

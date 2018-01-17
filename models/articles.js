@@ -4,16 +4,12 @@ var Note = require("./notes");
 
 console.log('Running mongoose version: ', mongoose.version);
  
-const ArticleSchema = new Schema({
+const ArticleSchema = mongoose.Schema({
     headline: {
         type: String,
     },
     link: {
         type: String,
-    },
-    saved: {
-        type: Boolean,
-        default: false
     },
     notes: [{ type: Schema.Types.ObjectId, ref: 'Notes' }],
     date:   {  

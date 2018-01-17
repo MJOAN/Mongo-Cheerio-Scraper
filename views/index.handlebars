@@ -39,7 +39,7 @@
             {{this.summary}}
           </div>
           <div class="panel-footer">
-            <button class="btn btn-primary" id="saved"><a href="/saved/{{this._id}}" data-behaviour="savedModal" data-title="Saved Article" data-content="" style="color: #fff">Save Article</a></button>
+            <button class="btn btn-primary save-article" id="saved"><a href="/save" data-behaviour="savedModal" data-title="Saved Article" data-headline="{{this.headline}}" data-summary="{{this.summary}}" data-link="{{this.link}}">Save Article</a></button>
           </div>
         </div>
      {{/each}} 
