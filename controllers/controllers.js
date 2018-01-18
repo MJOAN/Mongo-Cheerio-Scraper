@@ -67,9 +67,10 @@ router.get("/scrape", function(req, res) {
     });
   });
 
+//MyModel.find({}, function (err, docs) {});
 
 router.get("/saved", function(req, res) {
-  db.Article.find({}, function(err, saved) {
+  Article.find({}, function(err, saved) {
       res.render('index', {
           title: 'Saved Articles',
           saved
@@ -82,13 +83,14 @@ router.post("/save", function(req, res) {
   console.log("req", req.body)
 
   var Articles = new Article(req.body);  
-  db.Articles.save((err, savedArticles) => {  
+  Articles.save((err, savedArticles) => {  
     if (err) {
         res.status(500).send(err);
     }
     res.status(200).send(savedArticles);
   });
 });
+
 
 
 router.post("/notes/:id", function(req, res) {
