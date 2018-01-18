@@ -93,50 +93,30 @@ router.post("/save", function(req, res) {
 
 
 
-router.post("/notes/:id", function(req, res) {
-  // Update the note that matches the object id
-  Note.update({
-    "_id": mongojs.ObjectId(req.params.id)
-  }, {
-    // Set the title, note and modified parameters
-    // sent in the req's body.
-    $set: {
-      "title": req.body.title,
-      "text": req.body.text,
-      "date": Date.now()
+router.post("/note", function(req, res) {
+  // Remove a note using the objectID
+  var note = new Article(req.body);  
+  Article.save((err, savedNote) => {  
+    if (err) {
+        res.status(500).send(err);
     }
-  }, function(error, note) {
-    // Log any errors from mongojs
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    // Otherwise, send the mongojs response to the browser
-    // This will fire off the success function of the ajax request
-    else {
-      console.log(note);
-      res.send(note);
-    }
+    res.status(200).send(savedNote);
   });
 });
 
 
 
 router.get("/delete/:id", function(req, res) {
-
   var condition = "id = " + req.params.id;
-  console.log("condition", condition);
-  // Remove a note using the objectID
-  db.Note.remove({
-    "_id": mongojs.ObjectID(req.params.id)
+
+  Article.remove({
+    "id": req.params.id
   }, function(error, removed) {
     // Log any errors from mongojs
     if (error) {
       console.log(error);
       res.send(error);
     }
-    // Otherwise, send the mongojs response to the browser
-    // This will fire off the success function of the ajax request
     else {
       console.log(removed);
       res.send(removed);
