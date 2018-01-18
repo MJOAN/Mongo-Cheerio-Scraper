@@ -5,11 +5,11 @@ const cheerio = require('cheerio');
 const request = require('request');
 
 // setup mongoose connection
-const databaseUrl = "mongoscraper";
+const databaseUri = 'mongodb://localhost/mongoscraper';
 const collections = ["scrapedarticles"];
 const mongoose = require("mongoose");
 
-mongoose.connect('mongodb://localhost/databaseUrl');
+mongoose.connect('mongodb://localhost/mongoscraper');
 const db = mongoose.connection;
 
 const Note = require("../models/notes.js");

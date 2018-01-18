@@ -5,12 +5,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const request = require("request");
 const cheerio = require("cheerio");
+//const logger = require("logger");
 const app = express();
 
 // public dir static
 app.use(express.static("public"));
 
 // set express data parsing
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -26,12 +28,17 @@ require("./models/notes.js");
 require("./models/articles.js");
 
 // setup mongoose connection
-const databaseUrl = "mongoscraper";
+const databaseUri = 'mongodb://localhost/mongoscraper';
 const collections = ["scrapedarticles"];
 
-const config = require("./config/database.js")
-mongoose.connect('mongodb://localhost/databaseUrl' || MONGODB_URI);
-console.log("created new database: ", databaseUrl)
+if (process.env.MONGODB_URI) {
+	mongoose.connect(process.env.MONGODB_URI);
+} else {
+	mongoose.connect(databaseUri);
+}
+
+
+console.log("created new database: ", databaseUri)
 
 //Get the default connection
 var db = mongoose.connection;
@@ -48,7 +55,7 @@ db.once("open", function() {
 const routes = require("./controllers/controllers.js");
 app.use("/", routes);
 
-console.log("created new database: ", databaseUrl)
+console.log("created new database: ", databaseUri)
 
 app.listen(3000, function() {
   console.log("App running on port 3000!");
