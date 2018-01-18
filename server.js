@@ -28,7 +28,7 @@ require("./models/notes.js");
 require("./models/articles.js");
 
 // setup mongoose connection
-const databaseUri = 'mongodb://localhost/mongoscraper';
+const databaseUri = "mongodb://localhost/mongoscraper";
 const collections = ["scrapedarticles"];
 
 if (process.env.MONGODB_URI) {
@@ -37,14 +37,15 @@ if (process.env.MONGODB_URI) {
 	mongoose.connect(databaseUri);
 }
 
-
 console.log("created new database: ", databaseUri)
 
 //Get the default connection
 var db = mongoose.connection;
 
 /// bind connection to error event
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('error', function (err) { 
+	console.log('MongoDB connection error:', err));
+});
 
 // log success once in mongoose
 db.once("open", function() {
