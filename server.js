@@ -44,7 +44,7 @@ var db = mongoose.connection;
 
 /// bind connection to error event
 db.on('error', function (err) { 
-	console.log('MongoDB connection error:', err));
+	console.log('MongoDB connection error:', err);
 });
 
 // log success once in mongoose
