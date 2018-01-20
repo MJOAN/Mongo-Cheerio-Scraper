@@ -8,7 +8,6 @@ const cheerio = require("cheerio");
 //const logger = require("logger");
 const app = express();
 
-// public dir static
 app.use(express.static("public"));
 
 // set express data parsing
@@ -32,8 +31,10 @@ const databaseUri = "mongodb://localhost/mongoscraper";
 const collections = ["scrapedarticles"];
 console.log('MONGODB_URI', process.env.MONGODB_URI)
 if (process.env.MONGODB_URI) {
+	console.log('remote')
 	mongoose.connect(process.env.MONGODB_URI);
 } else {
+	console.log('remote')
 	mongoose.connect(databaseUri);
 }
 
