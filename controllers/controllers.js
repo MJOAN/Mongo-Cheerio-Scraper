@@ -9,7 +9,11 @@ const databaseUri = "mongodb://localhost/mongoscraper";
 const collections = ["scrapedarticles"];
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/mongoscraper");
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
 const db = mongoose.connection;
 
 const Note = require("../models/notes.js");
