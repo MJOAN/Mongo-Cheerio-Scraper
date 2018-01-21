@@ -29,7 +29,10 @@ require("./models/articles.js");
 // setup mongoose connection
 const databaseUri = "mongodb://localhost/mongoscraper";
 const collections = ["scrapedarticles"];
+
+
 console.log('MONGODB_URI', process.env.MONGODB_URI)
+
 if (process.env.MONGODB_URI) {
 	console.log('remote')
 	mongoose.connect(process.env.MONGODB_URI);
@@ -59,7 +62,9 @@ app.use("/", routes);
 
 console.log("created new database: ", databaseUri)
 
-app.listen(3000, function() {
+var port = process.env.PORT || 3000;
+
+app.listen(port, function() {
   console.log("App running on port 3000!");
 });
 
