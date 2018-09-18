@@ -1,25 +1,16 @@
 # Mongo-Cheerio-Scraper
 
 ### Overview
-In this assignment, you'll create a web app that lets users view and leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.
+In this assignment, I created a web app that lets users view and leave comments on the latest news using Mongoose and Cheerio to scrape news from the New York Times. Technologies used are Express, Handlebars, Mongoose, Cheerio.
 
-### Before You Begin
-1. Create a GitHub repo for this assignment and clone it to your computer.
-2. Run `npm init`. When that's finished, install and save these npm packages:
-3. express
-4. express-handlebars
-5. mongoose
-6. body-parser
-7. cheerio
-8. request
-
+Check out [my demo](http://mongo-newyorktimes-scraper.herokuapp.com/) to study the app's basic functionality. This demo is deployed on Heroku using mLab which works as a remote MongoDB!
 
 ![Node Screenshot 8](ss1.png)
 ![Node Screenshot 7](ss2.png)
 ![Node Screenshot 7](ss3.png)
 ![Node Screenshot 7](ss4.png)
 
-9. In order to deploy your project to Heroku, you must set up an mLab provision. mLab is remote MongoDB database that Heroku supports natively. Follow these steps to get it running:
+These were the steps I took to provision mLab on Heroku and get it running:
 
 1. Create a Heroku app in your project directory.
 2. Run this command in your Terminal/Bash window:
