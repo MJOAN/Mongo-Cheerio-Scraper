@@ -1,7 +1,7 @@
 # Mongo-Cheerio-Scraper
 
-### Overview
-In this assignment, I created a web app that lets users view and leave comments on the latest news using Mongoose and Cheerio to scrape news from the New York Times. Technologies used are Express, Handlebars, Mongoose, Cheerio.
+## Overview
+Here I created a web app that lets users view and leave comments on the latest news using Mongoose and Cheerio to scrape news from the New York Times. Technologies used are Express, Handlebars, Mongoose, Cheerio.
 
 Check out [my demo](http://mongo-newyorktimes-scraper.herokuapp.com/) to study the app's basic functionality. This demo is deployed on Heroku using mLab which works as a remote MongoDB!
 
@@ -30,7 +30,7 @@ These were the steps I took to provision mLab on Heroku and get it running:
 * You shouldn't connect to the remote database when developing locally. Your classroom's network may
 not function if you do (but it's also best practice to use a local databse for development).
 
-## Instructions
+## Process
 * Create an app that accomplishes the following:
   1. Whenever a user visits your site, the app should scrape stories from a news outlet of your choice and display them for the user. Each scraped article should be saved to your application database. At a minimum, the app should scrape and display the following information for each article:
      * Headline - the title of the article
@@ -40,12 +40,6 @@ not function if you do (but it's also best practice to use a local databse for d
   2. Users should also be able to leave comments on the articles displayed and revisit them later.
   3. The comments should be saved to the database as well and associated with their articles. Users should also be able to delete comments left on articles. All stored comments should be visible to every user.
 
-### Tips
-* Go back to Saturday's activities if you need a refresher on how to partner one model with another.
-* Whenever you scrape a site for stories, make sure an article isn't already represented in your database before saving it; we don't want duplicates.
-* Don't just clear out your database and populate it with scraped articles whenever a user accesses your site.
-* If your app deletes stories every time someone visits, your users won't be able to see any comments except the ones that they post.
-
 ### Helpful Links
 * [MongoDB Documentation](https://docs.mongodb.com/manual/)
 * [Mongoose Documentation](http://mongoosejs.com/docs/api.html)
@@ -53,5 +47,5 @@ not function if you do (but it's also best practice to use a local databse for d
 
 - - -
 
-## Copyright
-Coding Boot Camp (C) 2016. All Rights Reserved.
+##### Copyright
+##### Coding Boot Camp (C) 2016. All Rights Reserved.
