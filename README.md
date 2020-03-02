@@ -1,7 +1,7 @@
 # Mongo-Cheerio-Scraper
 
 ## Overview
-Here I created a web app that lets users view and leave comments on the latest news using Mongoose and Cheerio to scrape news from the New York Times. Technologies used are Express, Handlebars, Mongoose, Cheerio.
+Here I created a web app that lets users view and leave comments on the latest news using Mongoose and Cheerio to scrape news from the New York Times. Technologies used are Express, Handlebars, Mongoose, Cheerio. Thanks to Coding Boot Camp 2016 (C) for template code and guidance!
 
 Check out [my demo](http://mongo-newyorktimes-scraper.herokuapp.com/) to study the app's basic functionality. This demo is deployed on Heroku using mLab which works as a remote MongoDB!
 
